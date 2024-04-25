@@ -4,6 +4,7 @@ from db_reader import get_polygons
 from geojson import Feature
 from turfpy.measurement import bbox
 from geometry_tools import populate_pixel_features
+from image_tools import create_image
 
 x = 2775195.38081054
 y = 5240590.731858477
@@ -30,3 +31,4 @@ h = int(w * height / width)
 scale = w / width
 
 polygons = populate_pixel_features(polygons, ex, w, h, scale, raw_extent)
+create_image(polygons, w, h)
