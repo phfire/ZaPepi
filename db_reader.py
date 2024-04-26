@@ -14,12 +14,12 @@ def get_polygons(extent: list[float]) -> list[MapPoly]:
 
 
 
-    postgis_extent = "ST_MakeEnvelope(%s, %s, %s, %s, 3857)" % tuple(extent)
+    postgis_extent = "ST_TRANSFORM(ST_MakeEnvelope(%s, %s, %s, %s, 3857), 4326)" % tuple(extent)
 
     sql = f"""\
-    SELECT ST_AsGeoJSON(geometry), id_color, id_background, id_pattern
+    SELECT ST_AsGeoJSON(ST_TRANSFORM(geom, 3857)), id_color, id_background, id_pattern
     FROM geology.map_polygons
-    WHERE ST_Intersects(geometry, {postgis_extent})"""
+    WHERE ST_Intersects(geom, {postgis_extent})"""
     curs.execute(sql)
 
     rows: list[MapPoly] = []
